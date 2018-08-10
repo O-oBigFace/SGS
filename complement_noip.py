@@ -57,7 +57,7 @@ def complement(lock, lower, upper, batch=5):
             max_tries = 3
             while author is None and max_tries > 0:
                 try:
-                    author = next(scholarly.search_author(expert, proxy)).fill(proxy)
+                    author = next(scholarly.search_author(expert)).fill()
                 except StopIteration:
                     print('No professor named', expert, i)
                     list_result.append((str(i), '', -1, -1, -1, -1, -1, '', ''))

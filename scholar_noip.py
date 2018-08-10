@@ -58,14 +58,14 @@ def _get_page(pagerequest):
         raise Exception('Error: {0} {1}'.format(resp.status_code, resp.reason))
 
 
-def _get_soup(pagerequest, proxy):
+def _get_soup(pagerequest):
     """Return the BeautifulSoup for a page on scholar.google.com"""
     html = _get_page(pagerequest)
 
     return BeautifulSoup(html, 'html.parser')
 
 
-def _search_citation_soup(soup, proxy):
+def _search_citation_soup(soup):
     """Generator that returns Author objects from the author search page"""
     while True:
         for row in soup.find_all('div', 'gsc_1usr'):
@@ -74,7 +74,7 @@ def _search_citation_soup(soup, proxy):
         if next_button and 'disabled' not in next_button.attrs:
             url = next_button['onclick'][17:-1]
             url = codecs.getdecoder("unicode_escape")(url)[0]
-            soup = _get_soup(_HOST+url, proxy)
+            soup = _get_soup(_HOST+url)
         else:
             break
 
@@ -108,7 +108,7 @@ class Author(object):
                 self.citedby = 0
         self._filled = False
 
-    def fill(self, proxy):
+    def fill(self):
         """Populate the Author with information from their profile"""
         url_citations = _CITATIONAUTH.format(self.id)
         url = '{0}&pagesize={1}'.format(url_citations, _PAGESIZE)
@@ -139,8 +139,8 @@ class Author(object):
         return pprint.pformat(self.__dict__)
 
 
-def search_author(name, proxy):
+def search_author(name):
     """Search by author name and return a generator of Author objects"""
     url = _AUTHSEARCH.format(requests.utils.quote(name))
-    soup = _get_soup(_HOST+url, proxy)
-    return _search_citation_soup(soup, proxy)
+    soup = _get_soup(_HOST+url)
+    return _search_citation_soup(soup)
