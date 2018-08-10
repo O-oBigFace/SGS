@@ -11,21 +11,15 @@ column = {
     "expert": "A",
     "affiliation": "B",
     "interests": "C",
-    "email": "D",
-    "phone": "E",
-    "address": "F",
-    "country": "G",
-    "language": "H",
-    "position": "I",
-    "name": "J",
-    "citedby": "K",
-    "hindex": "L",
-    "hindex5y": "M",
-    "i10index": "N",
-    "i10index5y": "O",
-    "url_picture": "P",
+    "name": "D",
+    'email':'E',
+    "citedby": "F",
+    "hindex": "G",
+    "hindex5y": "H",
+    "i10index": "I",
+    "i10index5y": "J",
+    "url_picture": "K",
 }
-
 path_excel = os.path.join(os.getcwd(), 'result.xlsx')
 path_recorder = os.path.join(os.getcwd(), 'record')
 path_result_file = os.path.join(os.getcwd(), 'result')
@@ -50,28 +44,27 @@ def complement(lock, lower, upper, batch=5):
         for i in range(lower, min(lower + batch, upper + 1)):
             if i > sheet.max_row:
                 break
-            if recoder_list[str(i)]:
-                print(i)
+            if recoder_list.setdefault(str(i), False):
                 continue
             if time.time() - start >= 60 or _isIPNeedChange:
                 start = time.time()
                 proxy = ipprovider.get_ip()
                 _isIPNeedChange = False
-            name = sheet[column["expert"] + str(i)].value
-            name = name if name is not None else ''
+            expert = sheet[column["expert"] + str(i)].value
+            expert = expert if expert is not None else ''
 
             author = None
             max_tries = 3
             while author is None and max_tries > 0:
                 try:
-                    author = next(scholarly.search_author(name, proxy)).fill(proxy)
+                    author = next(scholarly.search_author(expert, proxy)).fill(proxy)
                 except StopIteration:
-                    print('No professor named', name, i)
+                    print('No professor named', expert, i)
                     list_result.append((str(i), '', -1, -1, -1, -1, -1, '', ''))
                     break
                 except Exception as e:
                     _isIPNeedChange = True
-                    print(e, name, i)
+                    print(e, expert, i)
                     # 时间惩罚
                     time.sleep(60)
                     max_tries -= 1
@@ -82,6 +75,7 @@ def complement(lock, lower, upper, batch=5):
 
             name = author.name
             affiliation = author.affiliation
+            email = author.email
             citedby = author.citedby
             hindex = author.hindex
             hindex5y = author.hindex5y
@@ -89,7 +83,7 @@ def complement(lock, lower, upper, batch=5):
             i10index5y = author.i10index5y
             url_picture = author.url_picture
 
-            result = (str(i), name, citedby, hindex, hindex5y, i10index, i10index5y, url_picture, affiliation)
+            result = (str(i), name, affiliation, email, citedby, hindex, hindex5y, i10index, i10index5y, url_picture)
             list_result.append(result)
             print(result)
 

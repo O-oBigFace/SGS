@@ -92,11 +92,14 @@ class Author(object):
                 self.affiliation = affiliation.text
             else:
                 self.affiliation = ''
-            # email = __data.find('div', class_='gsc_oai_eml')
-            # if email:
-            #     self.email = re.sub(_EMAILAUTHORRE, r'@', email.text)
-            # self.interests = [i.text.strip() for i in
-            #                   __data.find_all('a', class_='gsc_oai_one_int')]
+
+            self.email = ''
+            email = __data.find('div', class_='gsc_oai_eml')
+            if email:
+                self.email = re.sub(_EMAILAUTHORRE, r'@', email.text)
+
+            self.interests = [i.text.strip() for i in
+                              __data.find_all('a', class_='gsc_oai_one_int')]
             citedby = __data.find('div', class_='gsc_oai_cby')
             if citedby and citedby.text != '':
                 self.citedby = int(citedby.text[9:])
