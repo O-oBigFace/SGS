@@ -1,6 +1,6 @@
 import os
 import openpyxl
-import scholar as scholarly
+import scholar_noip as scholarly
 import multiprocessing
 # from SpiderKit.ip_pool_foreign import IPProvider
 import time
