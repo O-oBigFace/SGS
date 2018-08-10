@@ -40,12 +40,14 @@ _SESSION = requests.Session()
 _PAGESIZE = 100
 
 
-def _get_page(pagerequest, proxy):
+def _get_page(pagerequest):
     """Return the data for a page on scholar.google.com"""
     _HEADERS['User-Agent'] = random.choice(agents)
     # Note that we include a sleep to avoid overloading the scholar server
-    time.sleep(5 + random.uniform(0, 5))
-    resp = _SESSION.get(pagerequest, headers=_HEADERS, cookies=_COOKIES, proxies={proxy['type']: proxy['type'] + "://" + proxy['ip'] + ':' + str(proxy['port'])})
+    time.sleep(15 + random.uniform(0, 5))
+    resp = _SESSION.get(pagerequest, headers=_HEADERS, cookies=_COOKIES,
+                        # proxies={proxy['type']: proxy['type'] + "://" + proxy['ip'] + ':' + str(proxy['port'])}
+                        )
 
     if resp.status_code == 200:
         return resp.text
@@ -58,7 +60,7 @@ def _get_page(pagerequest, proxy):
 
 def _get_soup(pagerequest, proxy):
     """Return the BeautifulSoup for a page on scholar.google.com"""
-    html = _get_page(pagerequest, proxy)
+    html = _get_page(pagerequest)
 
     return BeautifulSoup(html, 'html.parser')
 
@@ -110,7 +112,7 @@ class Author(object):
         """Populate the Author with information from their profile"""
         url_citations = _CITATIONAUTH.format(self.id)
         url = '{0}&pagesize={1}'.format(url_citations, _PAGESIZE)
-        soup = _get_soup(_HOST+url, proxy)
+        soup = _get_soup(_HOST+url)
         self.name = soup.find('div', id='gsc_prf_in').text
         self.affiliation = soup.find('div', class_='gsc_prf_il').text
         # self.interests = [i.text.strip() for i in soup.find_all('a', class_='gsc_prf_inta')]

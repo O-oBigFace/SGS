@@ -2,7 +2,7 @@ import os
 import openpyxl
 import scholar as scholarly
 import multiprocessing
-from SpiderKit.ip_pool_foreign import IPProvider
+# from SpiderKit.ip_pool_foreign import IPProvider
 import time
 import json
 import sys
@@ -37,19 +37,19 @@ def complement(lock, lower, upper, batch=5):
     while lower < upper:
         list_result = []
         # 获取代理ip
-        ipprovider = IPProvider()
-        start = time.time()
-        proxy = ipprovider.get_ip()
+        # ipprovider = IPProvider()
+        # start = time.time()
+        # proxy = ipprovider.get_ip()
         _isIPNeedChange = False
         for i in range(lower, min(lower + batch, upper + 1)):
             if i > sheet.max_row:
                 break
             if recoder_list.setdefault(str(i), False):
                 continue
-            if time.time() - start >= 30 or _isIPNeedChange:
-                start = time.time()
-                proxy = ipprovider.get_ip()
-                _isIPNeedChange = False
+            # if time.time() - start >= 30 or _isIPNeedChange:
+            #     start = time.time()
+                # proxy = ipprovider.get_ip()
+                # _isIPNeedChange = False
             expert = sheet[column["expert"] + str(i)].value
             expert = expert if expert is not None else ''
 
