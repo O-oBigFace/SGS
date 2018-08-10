@@ -103,9 +103,9 @@ if __name__ == '__main__':
     with open(path_result_file, 'w', encoding='utf-8') as f:
         pass
 
-    begin_no = sys.argv[1]
-    counts = sys.argv[2]
-    num_of_processing = 4 if len(sys.argv) < 4 else sys.argv[3]
+    begin_no = int(sys.argv[1])
+    counts = int(sys.argv[2])
+    num_of_processing = 4 if len(sys.argv) < 4 else int(sys.argv[3])
     have_done = 0
 
     if begin_no + counts > sheet.max_row:
