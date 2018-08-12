@@ -44,7 +44,7 @@ def _get_page(pagerequest):
     """Return the data for a page on scholar.google.com"""
     _HEADERS['User-Agent'] = random.choice(agents)
     # Note that we include a sleep to avoid overloading the scholar server
-    time.sleep(15 + random.uniform(0, 5))
+    time.sleep(7 + random.uniform(0, 5))
     resp = _SESSION.get(pagerequest, headers=_HEADERS, cookies=_COOKIES,
                         # proxies={proxy['type']: proxy['type'] + "://" + proxy['ip'] + ':' + str(proxy['port'])}
                         )

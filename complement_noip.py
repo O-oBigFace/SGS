@@ -60,7 +60,7 @@ def complement(lock, lower, upper, batch=5):
                     author = next(scholarly.search_author(expert)).fill()
                 except StopIteration:
                     print('No professor named', expert, i)
-                    list_result.append((str(i), '', -1, -1, -1, -1, -1, '', ''))
+                    list_result.append((str(i), '', '', '', -1, -1, -1, -1, -1, ''))
                     break
                 except Exception as e:
                     _isIPNeedChange = True
