@@ -33,19 +33,32 @@ with open(path_recorder, 'r', encoding='utf-8') as f:
 
 
 def complement(lock, lower, upper, batch=5):
+    """
+    专家信息补齐
+    :param lock: 多进程锁
+    :param lower: 处理学者id下界
+    :param upper: 处理学者id上界
+    :param batch: 分批次处理 批次大小
+    :return:
+    """
     print(lower, "~", upper)
     while lower < upper:
         list_result = []
-        # 获取代理ip
+
+        # 获取代理ip，记录提取的时间
         ipprovider = IPProvider()
         start = time.time()
         proxy = ipprovider.get_ip()
+
+        # 是否更换ip
         _isIPNeedChange = False
         for i in range(lower, min(lower + batch, upper + 1)):
             if i > sheet.max_row:
                 break
             if recoder_list.setdefault(str(i), False):
                 continue
+
+            # 如果ip已经用了30秒，或者需要更换ip，则更换ip
             if time.time() - start >= 30 or _isIPNeedChange:
                 start = time.time()
                 proxy = ipprovider.get_ip()
@@ -54,14 +67,17 @@ def complement(lock, lower, upper, batch=5):
             expert = expert if expert is not None else ''
 
             author = None
+            # 最多重试三次
             max_tries = 3
             while author is None and max_tries > 0:
                 try:
                     author = next(scholarly.search_author(expert, proxy)).fill(proxy)
+                # 如果谷歌学术中不存在该学者的信息，则记录默认值
                 except StopIteration:
                     print('No professor named', expert, i)
                     list_result.append((str(i), '', '', '', -1, -1, -1, -1, -1, ''))
                     break
+                # 如果出现网络错误，则请求更换ip
                 except Exception as e:
                     _isIPNeedChange = True
                     print(e, expert, i)
@@ -83,11 +99,13 @@ def complement(lock, lower, upper, batch=5):
             i10index5y = author.i10index5y
             url_picture = author.url_picture
 
+            # 列表记录爬取结果
             result = (str(i), name, affiliation, email, citedby, hindex, hindex5y, i10index, i10index5y, url_picture)
             list_result.append(result)
             print(result)
 
         lock.acquire()
+        # 每批次执行一次：记录结果
         try:
             with open(path_result_file, 'a', encoding='utf-8') as file:
                 for r in list_result:
@@ -103,6 +121,15 @@ if __name__ == '__main__':
     with open(path_result_file, 'w', encoding='utf-8') as f:
         pass
 
+    """
+    多进程执行
+    :param begin_no: 爬取开始id
+    :param counts: 这一次需要爬取多少数据
+    :param num_of_processing: 进程个数
+    :param batch: 分批次处理 批次大小
+    
+    执行示例：python complement.py [begin_no] [counts] [num_of_processing]
+    """
     begin_no = sys.argv[1]
     counts = sys.argv[2]
     num_of_processing = 4 if len(sys.argv) < 4 else sys.argv[3]
