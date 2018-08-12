@@ -26,7 +26,7 @@ path_worksheet = os.path.join(os.getcwd(), 'result.xlsx')
 wb = openpyxl.load_workbook(path_worksheet)
 st = wb.active
 
-with open('result', 'r', encoding='utf-8') as f:
+with open('result212', 'r', encoding='utf-8') as f:
     for line in f.readlines():
         item = json.loads(line.strip())
         if len(item) < 10:
