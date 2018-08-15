@@ -22,11 +22,12 @@ column = {
     "url_picture": "P",
 }
 path_worksheet = os.path.join(os.getcwd(), 'result.xlsx')
+path_result_file = os.path.join(os.getcwd(), 'result')
 
 wb = openpyxl.load_workbook(path_worksheet)
 st = wb.active
 
-with open('result (2)', 'r', encoding='utf-8') as f:
+with open(path_result_file, 'r', encoding='utf-8') as f:
     for line in f.readlines():
         item = json.loads(line.strip())
         if len(item) < 10:
