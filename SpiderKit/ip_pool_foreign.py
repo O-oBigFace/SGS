@@ -38,7 +38,10 @@ class IPProvider:
         # i = self.count
         # self.count += 1
         # return self.__ip_list[i]
-        return {'https': 'test:google@23.91.7.18:8080'}
+        return {
+            'https': 'http://test:google@23.91.7.18:8080',
+            'http': 'http://test:google@23.91.7.18:8080',
+        }
 
     def get_list(self):
         return self.__ip_list
