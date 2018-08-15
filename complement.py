@@ -86,7 +86,7 @@ def complement(lock, lower, upper, batch=5):
                     max_tries -= 1
 
             if author is None:
-                list_result.append((str(i), '', -1, -1, -1, -1, -1, '', ''))
+                list_result.append((str(i), '', '', '', -1, -1, -1, -1, -1, ''))
                 continue
 
             name = author.name
