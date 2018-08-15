@@ -130,9 +130,9 @@ if __name__ == '__main__':
     
     执行示例：python complement.py [begin_no] [counts] [num_of_processing]
     """
-    begin_no = sys.argv[1]
-    counts = sys.argv[2]
-    num_of_processing = 4 if len(sys.argv) < 4 else sys.argv[3]
+    begin_no = int(sys.argv[1])
+    counts = int(sys.argv[2])
+    num_of_processing = 4 if len(sys.argv) < 4 else int(sys.argv[3])
     have_done = 0
 
     if begin_no + counts > sheet.max_row:
