@@ -14,6 +14,8 @@ import codecs
 import requests
 import time
 from SpiderKit.agents import agents
+import warnings
+warnings.filterwarnings('ignore')
 
 _GOOGLEID = hashlib.md5(str(random.random()).encode('utf-8')).hexdigest()[:16]
 _COOKIES = {'GSP': 'ID={0}:CF=4'.format(_GOOGLEID)}
