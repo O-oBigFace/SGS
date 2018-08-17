@@ -51,7 +51,7 @@ def _get_page(pagerequest, proxy):
     proxy_auth = "0b3d10012b61488aa0667b27c829d5de:"
     proxies = {"https": "https://{}@{}:{}/".format(proxy_auth, proxy_host, proxy_port),
                "http": "http://{}@{}:{}/".format(proxy_auth, proxy_host, proxy_port)}
-    resp = _SESSION.get(pagerequest, headers=_HEADERS, cookies=_COOKIES, proxies=proxies)
+    resp = _SESSION.get(pagerequest, headers=_HEADERS, cookies=_COOKIES, proxies=proxies, verify=False)
 
     if resp.status_code == 200:
         return resp.text
