@@ -44,10 +44,14 @@ def _get_page(pagerequest, proxy):
     """Return the data for a page on scholar.google.com"""
     _HEADERS['User-Agent'] = random.choice(agents)
     # Note that we include a sleep to avoid overloading the scholar server
-    time.sleep(7 + random.uniform(0, 5))
-    resp = _SESSION.get(pagerequest, headers=_HEADERS, cookies=_COOKIES, proxies=proxy
-    # {proxy['type']: proxy['type'] + "://" + proxy['ip'] + ':' + str(proxy['port'])}
-                        )
+    time.sleep(10 + random.uniform(0, 5))
+
+    proxy_host = "proxy.crawlera.com"
+    proxy_port = "8010"
+    proxy_auth = "0b3d10012b61488aa0667b27c829d5de:"
+    proxies = {"https": "https://{}@{}:{}/".format(proxy_auth, proxy_host, proxy_port),
+               "http": "http://{}@{}:{}/".format(proxy_auth, proxy_host, proxy_port)}
+    resp = _SESSION.get(pagerequest, headers=_HEADERS, cookies=_COOKIES, proxies=proxies)
 
     if resp.status_code == 200:
         return resp.text

@@ -34,6 +34,9 @@ class IPProvider:
         pass
 
     def get_ip(self):
+        """
+        :return: [{proxy1}, {proxy2},...]
+        """
         # self.__get_ip_list()
         # i = self.count
         # self.count += 1

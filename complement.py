@@ -67,6 +67,7 @@ def complement(lock, lower, upper, batch=5):
             expert = expert if expert is not None else ''
 
             author = None
+            none_author_tuple = (str(i), '', '', '', -1, -1, -1, -1, -1, '')
             # 最多重试三次
             max_tries = 3
             while author is None and max_tries > 0:
@@ -75,7 +76,7 @@ def complement(lock, lower, upper, batch=5):
                 # 如果谷歌学术中不存在该学者的信息，则记录默认值
                 except StopIteration:
                     print('No professor named', expert, i)
-                    list_result.append((str(i), '', '', '', -1, -1, -1, -1, -1, ''))
+                    list_result.append((none_author_tuple))
                     break
                 # 如果出现网络错误，则请求更换ip
                 except Exception as e:
@@ -86,7 +87,7 @@ def complement(lock, lower, upper, batch=5):
                     max_tries -= 1
 
             if author is None:
-                list_result.append((str(i), '', '', '', -1, -1, -1, -1, -1, ''))
+                list_result.append(none_author_tuple)
                 continue
 
             name = author.name
