@@ -148,6 +148,8 @@ if __name__ == '__main__':
         (lock, have_done + begin_no + quarter * 3 + 1, begin_no + quarter * 4),
         (lock, have_done + begin_no + quarter * 4 + 1, begin_no + quarter * 5),
         (lock, have_done + begin_no + quarter * 5 + 1, begin_no + quarter * 6),
+        (lock, have_done + begin_no + quarter * 6 + 1, begin_no + quarter * 7),
+        (lock, have_done + begin_no + quarter * 7 + 1, begin_no + quarter * 8),
     ]
 
     for j in range(1, num_of_processing + 1):
