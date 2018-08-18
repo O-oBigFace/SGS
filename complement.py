@@ -76,7 +76,7 @@ def complement(lock, lower, upper, batch=5):
                 # 如果谷歌学术中不存在该学者的信息，则记录默认值
                 except StopIteration:
                     print('No professor named', expert, i)
-                    list_result.append((none_author_tuple))
+                    # list_result.append((none_author_tuple))
                     break
                 # 如果出现网络错误，则请求更换ip
                 except Exception as e:
