@@ -45,27 +45,27 @@ def complement(lock, lower, upper, batch=5):
     while lower < upper:
         list_result = []
 
-        # 获取代理ip，记录提取的时间
+        # # 获取代理ip，记录提取的时间
         ipprovider = IPProvider()
-        start = time.time()
+        # start = time.time()
         proxy = ipprovider.get_ip()
-
-        # 是否更换ip
-        _isIPNeedChange = False
+        #
+        # # 是否更换ip
+        # _isIPNeedChange = False
         for i in range(lower, min(lower + batch, upper + 1)):
             if i > sheet.max_row:
                 break
             if recoder_list.setdefault(str(i), False):
                 continue
 
-            # 如果ip已经用了30秒，或者需要更换ip，则更换ip
-            if time.time() - start >= 30 or _isIPNeedChange:
-                start = time.time()
-                proxy = ipprovider.get_ip()
-                _isIPNeedChange = False
+            # # 如果ip已经用了30秒，或者需要更换ip，则更换ip
+            # if time.time() - start >= 30 or _isIPNeedChange:
+            #     start = time.time()
+            #     proxy = ipprovider.get_ip()
+            #     _isIPNeedChange = False
+
             expert = sheet[column["expert"] + str(i)].value
             expert = expert if expert is not None else ''
-
             author = None
             none_author_tuple = (str(i), '', '', '', -1, -1, -1, -1, -1, '')
             # 最多重试三次
@@ -80,7 +80,7 @@ def complement(lock, lower, upper, batch=5):
                     break
                 # 如果出现网络错误，则请求更换ip
                 except Exception as e:
-                    _isIPNeedChange = True
+                    # _isIPNeedChange = True
                     print(e, expert, i)
                     # 时间惩罚
                     time.sleep(60)
