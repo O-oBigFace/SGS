@@ -50,4 +50,4 @@ if __name__ == '__main__':
         for item in dict_recorder.values():
             if item is True:
                 count += 1
-        print(count, "/ 46012", )
+        print(count, "/ 46011", )
