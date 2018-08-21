@@ -2,25 +2,8 @@ import openpyxl
 import os
 import json
 from recorder import recorder
+from util.configure import column
 
-column = {
-    "expert": "A",
-    "affiliation": "B",
-    "interests": "C",
-    "email": "D",
-    "phone": "E",
-    "address": "F",
-    "country": "G",
-    "language": "H",
-    "position": "I",
-    "name": "J",
-    "citedby": "K",
-    "hindex": "L",
-    "hindex5y": "M",
-    "i10index": "N",
-    "i10index5y": "O",
-    "url_picture": "P",
-}
 path_worksheet = os.path.join(os.getcwd(), 'result.xlsx')
 path_result_file = os.path.join(os.getcwd(), 'result')
 

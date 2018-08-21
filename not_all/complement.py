@@ -6,39 +6,10 @@ from SpiderKit.ip_pool_foreign import IPProvider
 import time
 import json
 import sys
+import util.configure
 
-# column = {
-#     "expert": "A",
-#     "affiliation": "B",
-#     "interests": "C",
-#     "name": "D",
-#     'email':'E',
-#     "citedby": "F",
-#     "hindex": "G",
-#     "hindex5y": "H",
-#     "i10index": "I",
-#     "i10index5y": "J",
-#     "url_picture": "K",
-# }
 
-column = {
-    "expert": "A",
-    "affiliation": "B",
-    "interests": "C",
-    "email": "D",
-    "name": "E",
-    "citedby": "F",
-    "hindex": "G",
-    "hindex5y": "H",
-    "i10index": "I",
-    "i10index5y": "J",
-    "url_picture": "K",
-    "phone": "L",
-    "address": "M",
-    "country": "N",
-    "language": "O",
-    "position": "P",
-}
+column = util.configure.column
 
 path_excel = os.path.join(os.getcwd(), 'result.xlsx')
 path_recorder = os.path.join(os.getcwd(), 'record')
