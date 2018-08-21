@@ -154,6 +154,7 @@ if __name__ == '__main__':
     """
     begin_no = int(sys.argv[1])
     counts = int(sys.argv[2])
+
     num_of_processing = 4 if len(sys.argv) < 4 else int(sys.argv[3])
     have_done = 0
 
@@ -172,3 +173,9 @@ if __name__ == '__main__':
         (lock, have_done + begin_no + quarter * 6 + 1, begin_no + quarter * 7),
         (lock, have_done + begin_no + quarter * 7 + 1, begin_no + quarter * 8),
     ]
+
+    for j in range(1, num_of_processing + 1):
+        process = multiprocessing.Process(target=complement, args=arg_list[j - 1])
+        process.start()
+        time.sleep(30)
+
