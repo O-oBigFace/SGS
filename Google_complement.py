@@ -63,8 +63,9 @@ def get_email_and_phone(key_words):
     emailRegex = re.compile(r"""([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,4}))""", re.VERBOSE)
     emailFilterRegex = re.compile(r"""^[Ee]-?mail""")
 
-    phoneRegex = re.compile(r"""([Pp]hone|[Mm]obile)[,:]?\s*(\+\s?[\d]+\s?)?(\([\d\-. ]+\)\s{0,2})*(\d+[/.-]?\s?)*""", re.VERBOSE)
-    phoneFilterRegex = re.compile(r"""([Pp]hone|[Mm]obile)[,:]?\s*""")
+    # phoneRegex = re.compile(r"""([Pp]hone|[Mm]obile)[,:]?\s*(\+\s?[\d]+\s?)?(\([\d\-. ]+\)\s{0,2})*(\d+[/.-]?\s?)*""", re.VERBOSE)
+    phoneRegex = re.compile(r"""([Pp]hone|[Mm]obile|[Tt]el)[,:]?[\s/]*(\+\s?[\d]+[\s/]?)?(\([\d\-. ]+\)[\s/]{0,2})*(\d+[/.-]?[\s/]?)*""", re.VERBOSE)
+    phoneFilterRegex = re.compile(r"""([Pp]hone|[Mm]obile|[Tt]el)[,:]?\s*""")
 
     email = str()
     phone = str()

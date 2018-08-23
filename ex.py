@@ -32,91 +32,30 @@ def complement(lock, lower, upper, batch=5):
     while lower < upper:
         list_result = []
 
-        # # 获取代理ip，记录提取的时间
-        ipprovider = IPProvider()
-        # start = time.time()
-        proxy = ipprovider.get_ip()
-        #
-        # # 是否更换ip
-        # _isIPNeedChange = False
+        proxy = ''
         for i in range(lower, min(lower + batch, upper + 1)):
             if i > sheet.max_row:
                 break
 
-            # # 如果ip已经用了30秒，或者需要更换ip，则更换ip
-            # if time.time() - start >= 30 or _isIPNeedChange:
-            #     start = time.time()
-            #     proxy = ipprovider.get_ip()
-            #     _isIPNeedChange = False
-
-            expert = sheet[column["expert"] + str(i)].value
-            expert = expert if expert is not None else ''
-            # 判断谷歌学术中是否有作者信息
-            author = None
-            # 最多重试三次
-            max_tries = 3
-            while author is None and max_tries > 0:
-                try:
-                    author = next(scholarly.search_author(expert, proxy)).fill(proxy)
-                # 如果谷歌学术中不存在该学者的信息，则记录默认值
-                except StopIteration:
-                    print('No professor named', expert, i)
-                # 如果出现网络错误，则请求更换ip
-                except Exception as e:
-                    # _isIPNeedChange = True
-                    print(e, expert, i)
-                    # 时间惩罚
-                    time.sleep(60)
-                    max_tries -= 1
-
-            if author is None:
-                name = ''
-                affiliation = ''
-                interests = ''
-                email = ''
-                citedby = -1
-                hindex = -1
-                hindex5y = -1
-                i10index = -1
-                i10index5y = -1
-                url_picture = ''
-            else:
-                name = author.name
-                affiliation = author.affiliation
-                # interests = author.interests
-                email = author.email
-                citedby = author.citedby
-                hindex = author.hindex
-                hindex5y = author.hindex5y
-                i10index = author.i10index
-                i10index5y = author.i10index5y
-                url_picture = author.url_picture
-
+            name = sheet[column["name"] + str(i)].value
             _affiliation = sheet[column['affiliation'] + str(i)].value
-            _affiliation = _affiliation if len(_affiliation) > 5 else affiliation
 
-            keywords = name + ' and ' +_affiliation
+            if len(_affiliation) < 5:
+                author = next(scholarly.search_author(name, proxy)).fill(proxy)
+                _affiliation = author.affiliation
+
+            keywords = name + ' and ' + _affiliation
             _email, phone = Google_complement.get_email_and_phone(keywords)
             address = Google_complement.get_address(_affiliation)
-            position = Google_complement.get_position(keywords)
             country = Google_complement.get_country(_affiliation)
 
             # 列表记录爬取结果
             result = (str(i),
-                      name,
                       _affiliation,
-                      email,
-                      citedby,
-                      hindex,
-                      hindex5y,
-                      i10index,
-                      i10index5y,
-                      url_picture,
                       _email,
                       phone,
                       address,
-                      position,
-                      country,
+                      country
                       )
             list_result.append(result)
             print(result)
@@ -127,11 +66,22 @@ def complement(lock, lower, upper, batch=5):
             with open(path_result_file, 'a', encoding='utf-8') as file:
                 for r in list_result:
                     file.write(json.dumps(r) + '\n')
-
         finally:
             lock.release()
 
         lower = min(upper, lower + batch)
+
+
+def input():
+    with open(path_result_file, 'r', encoding='utf-8') as f:
+        for line in f.readlines():
+            item = json.loads(line.strip())
+            sheet[column["affiliation"] + item[0]] = item[1]
+            sheet[column["_email"] + item[0]] = item[2]
+            sheet[column["phone"] + item[0]] = item[3]
+            sheet[column["address"] + item[0]] = item[4]
+            sheet[column["country"] + item[0]] = item[5]
+    reference.save(path_excel)
 
 
 if __name__ == '__main__':
