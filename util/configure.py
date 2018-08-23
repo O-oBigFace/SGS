@@ -14,10 +14,10 @@ column = {
     "url_picture": "K",
     "phone": "L",
     "address": "M",
-    "country": "N",
-    "position": "O",
+    "country": "P",
+    "position": "N",
     "language": "Q",
-    "_email": "P",
+    "_email": "O",
 }
 
 if __name__ == '__main__':

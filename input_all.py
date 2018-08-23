@@ -26,6 +26,7 @@ with open(path_result_file, 'r', encoding='utf-8') as f:
         st[column["phone"] + item[0]] = item[11]
         st[column["address"] + item[0]] = item[12]
         st[column["position"] + item[0]] = item[13]
+        st[column["country"] + item[0]] = item[14]
 
 wb.save(path_worksheet)
 recorder(path_worksheet)

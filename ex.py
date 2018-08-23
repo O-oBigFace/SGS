@@ -12,15 +12,11 @@ import Google_complement
 column = util.configure.column
 
 path_excel = os.path.join(os.getcwd(), 'result.xlsx')
-path_recorder = os.path.join(os.getcwd(), 'record')
-path_result_file = os.path.join(os.getcwd(), 'result')
+path_result_file = os.path.join(os.getcwd(), 'result_ex')
 
 # 读取文件
 reference = openpyxl.load_workbook(path_excel)
 sheet = reference.active
-with open(path_recorder, 'r', encoding='utf-8') as f:
-    # 记录结果字典：True - 结果已存在， False - 不存在
-    recoder_list = json.loads(f.read())
 
 
 def complement(lock, lower, upper, batch=5):
@@ -46,8 +42,6 @@ def complement(lock, lower, upper, batch=5):
         for i in range(lower, min(lower + batch, upper + 1)):
             if i > sheet.max_row:
                 break
-            if recoder_list.setdefault(str(i), False):
-                continue
 
             # # 如果ip已经用了30秒，或者需要更换ip，则更换ip
             # if time.time() - start >= 30 or _isIPNeedChange:
