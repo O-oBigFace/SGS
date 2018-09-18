@@ -76,6 +76,7 @@ def input():
     with open(path_result_file, 'r', encoding='utf-8') as f:
         for line in f.readlines():
             item = json.loads(line.strip())
+            print(item)
             sheet[column["affiliation"] + item[0]] = item[1]
             sheet[column["_email"] + item[0]] = item[2]
             sheet[column["phone"] + item[0]] = item[3]
@@ -83,45 +84,48 @@ def input():
             sheet[column["country"] + item[0]] = item[5]
     reference.save(path_excel)
 
+#
+# if __name__ == '__main__':
+#     # 清空result文件，防止其过大
+#     with open(path_result_file, 'w', encoding='utf-8') as f:
+#         pass
+#
+#     """
+#     多进程执行
+#     :param begin_no: 爬取开始id
+#     :param counts: 这一次需要爬取多少数据
+#     :param num_of_processing: 进程个数
+#     :param batch: 分批次处理 批次大小
+#
+#     执行示例：python complement.py [begin_no] [counts] [num_of_processing]
+#     """
+#     begin_no = int(sys.argv[1])
+#     counts = int(sys.argv[2])
+#
+#     num_of_processing = 4 if len(sys.argv) < 4 else int(sys.argv[3])
+#     have_done = 0
+#
+#     if begin_no + counts > sheet.max_row:
+#         counts = sheet.max_row - begin_no + 1
+#
+#     quarter = counts // num_of_processing
+#     lock = multiprocessing.Lock()
+#     arg_list = [
+#         (lock, have_done + begin_no, begin_no + quarter),
+#         (lock, have_done + begin_no + quarter + 1, begin_no + quarter * 2),
+#         (lock, have_done + begin_no + quarter * 2 + 1, begin_no + quarter * 3),
+#         (lock, have_done + begin_no + quarter * 3 + 1, begin_no + quarter * 4),
+#         (lock, have_done + begin_no + quarter * 4 + 1, begin_no + quarter * 5),
+#         (lock, have_done + begin_no + quarter * 5 + 1, begin_no + quarter * 6),
+#         (lock, have_done + begin_no + quarter * 6 + 1, begin_no + quarter * 7),
+#         (lock, have_done + begin_no + quarter * 7 + 1, begin_no + quarter * 8),
+#     ]
+#
+#     for j in range(1, num_of_processing + 1):
+#         process = multiprocessing.Process(target=complement, args=arg_list[j - 1])
+#         process.start()
+#         time.sleep(30)
+
 
 if __name__ == '__main__':
-    # 清空result文件，防止其过大
-    with open(path_result_file, 'w', encoding='utf-8') as f:
-        pass
-
-    """
-    多进程执行
-    :param begin_no: 爬取开始id
-    :param counts: 这一次需要爬取多少数据
-    :param num_of_processing: 进程个数
-    :param batch: 分批次处理 批次大小
-
-    执行示例：python complement.py [begin_no] [counts] [num_of_processing]
-    """
-    begin_no = int(sys.argv[1])
-    counts = int(sys.argv[2])
-
-    num_of_processing = 4 if len(sys.argv) < 4 else int(sys.argv[3])
-    have_done = 0
-
-    if begin_no + counts > sheet.max_row:
-        counts = sheet.max_row - begin_no + 1
-
-    quarter = counts // num_of_processing
-    lock = multiprocessing.Lock()
-    arg_list = [
-        (lock, have_done + begin_no, begin_no + quarter),
-        (lock, have_done + begin_no + quarter + 1, begin_no + quarter * 2),
-        (lock, have_done + begin_no + quarter * 2 + 1, begin_no + quarter * 3),
-        (lock, have_done + begin_no + quarter * 3 + 1, begin_no + quarter * 4),
-        (lock, have_done + begin_no + quarter * 4 + 1, begin_no + quarter * 5),
-        (lock, have_done + begin_no + quarter * 5 + 1, begin_no + quarter * 6),
-        (lock, have_done + begin_no + quarter * 6 + 1, begin_no + quarter * 7),
-        (lock, have_done + begin_no + quarter * 7 + 1, begin_no + quarter * 8),
-    ]
-
-    for j in range(1, num_of_processing + 1):
-        process = multiprocessing.Process(target=complement, args=arg_list[j - 1])
-        process.start()
-        time.sleep(30)
-
+    input()
